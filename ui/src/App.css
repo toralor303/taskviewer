@@ -1,0 +1,9 @@
+.grid {
+  display: grid;
+  justify-content: center;
+  justify-items: start;
+}
+
+.headerCell {
+  font-weight: bold;
+}
