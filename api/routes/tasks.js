@@ -65,7 +65,7 @@ router.patch('/:id', async (req, res) => {
   try {
     const updatedTask = await Task.updateOne(
       { _id: req.params.id },
-      { $set: { name: req.body.name, status: req.body.status } }
+      { $set: { name: req.body.name, status: req.body.status } },
     );
     res.json(updatedTask);
   } catch (e) {
