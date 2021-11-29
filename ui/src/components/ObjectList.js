@@ -1,44 +1,29 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import '../App.css';
-import { getAllObjects } from '../dao/Objects';
+import { getAllObjects, createTestObjects, deleteObject } from '../dao/Objects';
 
-const ObjectList = (props) => {
+const ObjectList = ({ baseUrl, objectName, objectsName }) => {
   const [objects, setObjects] = useState([]);
   const [columns, setColumns] = useState([]);
 
-  const loadObjects = useCallback(async () => {
-    const objList = await getAllObjects(props.baseUrl + props.objectsName);
-    setObjects(objList);
-    if (objList.length > 0) setColumns(Object.keys(objList[0]));
-  }, [props.baseUrl, props.objectsName]);
-
-  const createObjects = () => {
-    [1, 2, 3, 4, 5].map((task) => {
-      fetch(props.baseUrl + props.objectsName, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: 'Test', status: 'Todo' }),
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then(() => loadObjects());
-      return task;
+  const reloadObjects = useCallback(async () => {
+    await getAllObjects(baseUrl + objectsName, objects => {
+      setObjects(objects);
+      setColumns(objects.length > 0 ? Object.keys(objects[0]) : []);
     });
+  }, [baseUrl, objectsName]);
+
+  const createObjects = async () => {
+    await createTestObjects(baseUrl + objectsName, () => reloadObjects());
   };
 
-  useEffect(() => {
-    loadObjects();
-  }, [loadObjects]);
+  useEffect(async () => {
+    await reloadObjects();
+  }, [reloadObjects]);
 
-  const deleteObj = async (id) => {
-    await fetch(props.baseUrl + props.objectsName + '/' + id, {
-      method: 'DELETE',
-    });
-    await loadObjects();
+  const deleteObj = async id => {
+    deleteObject(`${baseUrl}${objectsName}/${id}`, () => reloadObjects());
   };
 
   return (
@@ -46,7 +31,7 @@ const ObjectList = (props) => {
       className='grid'
       style={{ gridTemplateColumns: `repeat(${columns.length + 2}, 1fr)` }}
     >
-      {columns.map((col) => (
+      {columns.map(col => (
         <div key={uuid()} className='headerCell'>
           {col}
         </div>
@@ -54,9 +39,9 @@ const ObjectList = (props) => {
       <div />
       <div />
       {objects.length > 0 ? (
-        objects.map((obj) => (
+        objects.map(obj => (
           <React.Fragment key={uuid()}>
-            {Object.entries(obj).map((keyValuePair) => (
+            {Object.entries(obj).map(keyValuePair => (
               <div key={uuid()} className='cell'>
                 {keyValuePair[1]}
               </div>
@@ -74,7 +59,7 @@ const ObjectList = (props) => {
       ) : (
         <div>
           <p>No objects to show</p>
-          <button onClick={() => loadObjects()}>Reload objects</button>
+          <button onClick={() => reloadObjects()}>Reload objects</button>
           <button onClick={() => createObjects()}>Generate objects</button>
         </div>
       )}
