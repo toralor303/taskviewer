@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.grid {
+  display: grid;
+  justify-content: center;
+  justify-items: start;
+}
+
+.headerCell {
+  font-weight: bold;
+}
