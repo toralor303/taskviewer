@@ -1,5 +1,3 @@
-import ObjectsList from './components/ObjectsList';
-import ObjectEdit from './components/ObjectEdit';
 import Pages from './pages/Pages';
 import { BrowserRouter } from 'react-router-dom';
 

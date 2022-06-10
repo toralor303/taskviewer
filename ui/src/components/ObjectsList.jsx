@@ -3,21 +3,24 @@ import { v4 as uuid } from 'uuid';
 import '../App.css';
 import { getAllObjects, createTestObjects, deleteObject } from '../dao/Objects';
 import { Link } from 'react-router-dom';
-import ObjectEdit from './ObjectEdit';
+import configs from '../Config/configs';
+import { useParams } from 'react-router-dom';
 
-const ObjecstList = ({ baseUrl, objectName, objectsName }) => {
+const ObjectsList = () => {
   const [objects, setObjects] = useState([]);
   const [columns, setColumns] = useState([]);
+  let params = useParams();
 
   const reloadObjects = useCallback(async () => {
-    await getAllObjects(baseUrl + objectsName, (objects) => {
+    await getAllObjects(configs.API_URI + params.objectType, (objects) => {
       setObjects(objects);
       setColumns(objects.length > 0 ? Object.keys(objects[0]) : []);
     });
-  }, [baseUrl, objectsName]);
+    console.log('done waiting for the API request')
+  }, [params.objectType]);
 
   const createObjects = async () => {
-    await createTestObjects(baseUrl + objectsName, () => reloadObjects());
+    await createTestObjects(process.env.API_URI + params.objectType, () => reloadObjects());
   };
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const ObjecstList = ({ baseUrl, objectName, objectsName }) => {
   }, [reloadObjects]);
 
   const deleteObj = async (id) => {
-    deleteObject(`${baseUrl}${objectsName}/${id}`, () => reloadObjects());
+    deleteObject(`${process.env.API_URI}${params.objectType}/${id}`, () => reloadObjects());
   };
 
   return (
@@ -33,6 +36,7 @@ const ObjecstList = ({ baseUrl, objectName, objectsName }) => {
       className='grid'
       style={{ gridTemplateColumns: `repeat(${columns.length + 2}, 1fr)` }}
     >
+      <h1>{params.objectType}</h1>
       {columns.map((col) => (
         <div key={uuid()} className='headerCell'>
           {col}
@@ -69,4 +73,4 @@ const ObjecstList = ({ baseUrl, objectName, objectsName }) => {
   );
 };
 
-export default ObjecstList;
+export default ObjectsList;

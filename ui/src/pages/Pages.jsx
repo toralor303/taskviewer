@@ -8,8 +8,7 @@ function Pages() {
 
   return (
       <Routes location={location} key={location.pathname}>
-        <Route path='/' element={<ObjectsList />} />
-        <Route path='/objectslist' element={<ObjectsList />} />
+        <Route path='/:objectType' element={<ObjectsList />} />
         <Route path='/object/:id' element={<ObjectEdit />} />
       </Routes>
   )

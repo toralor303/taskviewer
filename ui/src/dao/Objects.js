@@ -1,6 +1,9 @@
 export const getAllObjects = async (url, callback) => {
+  console.log('URL: ' + url)
   const res = await fetch(url);
+  console.log('res: ' + JSON.stringify(res));
   const data = await res.json();
+  console.log('Data : ' + data);
   callback(data);
 };
 

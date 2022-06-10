@@ -6,7 +6,7 @@ function ObjectEdit() {
     const [object, setObject] = useState({});
 
     const getObject = async () => {
-        const data = await fetch(`http://localhost:5000/tasks/${'62a1317bc6d689a420daebed'}`);
+        const data = await fetch(`http://localhost:5000/tasks/${params.id}`);
         setObject(await data.json());
         console.log(object);
     }

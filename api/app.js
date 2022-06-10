@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-require('dotenv/config');
+require('dotenv').config();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -16,7 +16,7 @@ app.use('/tasks', tasksRoute);
 app.use('/views', viewsRoute);
 
 // Connect to database
-mongoose.connect(process.env.DB_CONNECTION, () =>
+mongoose.connect(process.env.BD_CONNECTION, () =>
   console.log('Connected to the database')
 );
 
