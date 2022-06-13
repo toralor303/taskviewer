@@ -5,15 +5,15 @@ function ObjectEdit() {
     let params = useParams();
     const [object, setObject] = useState({});
 
-    const getObject = async () => {
-        const data = await fetch(`http://localhost:5000/tasks/${params.id}`);
-        setObject(await data.json());
-        console.log(object);
-    }
 
     useEffect(() => {
+        const getObject = async () => {
+            const data = await fetch(`http://localhost:5000/tasks/${params.id}`);
+            setObject(await data.json());
+            console.log(object);
+        }
         getObject();
-    });
+    }, [params.id]);
 
   return (
     <div>

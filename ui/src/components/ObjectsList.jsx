@@ -32,44 +32,46 @@ const ObjectsList = () => {
   };
 
   return (
-    <div
-      className='grid'
-      style={{ gridTemplateColumns: `repeat(${columns.length + 2}, 1fr)` }}
-    >
-      <h1>{params.objectType}</h1>
-      {columns.map((col) => (
-        <div key={uuid()} className='headerCell'>
-          {col}
+      <>
+        <h1>{params.objectType}</h1>
+        <div
+        className='grid'
+        style={{ gridTemplateColumns: `repeat(${columns.length + 2}, 1fr)` }}
+        >
+        {columns.map((col) => (
+            <div key={uuid()} className='headerCell'>
+            {col}
+            </div>
+        ))}
+        <div />
+        <div />
+        {objects.length > 0 ? (
+            objects.map((obj) => (
+            <React.Fragment key={uuid()}>
+                {Object.entries(obj).map((keyValuePair) => (
+                <div key={uuid()} className='cell'>
+                    {keyValuePair[1]}
+                </div>
+                ))}
+                <Link to={`/object/${obj._id}`}>Edit</Link>
+                <button
+                onClick={() => {
+                    deleteObj(obj._id);
+                }}
+                >
+                Delete
+                </button>
+            </React.Fragment>
+            ))
+        ) : (
+            <div>
+            <p>No objects to show</p>
+            <button onClick={() => reloadObjects()}>Reload objects</button>
+            <button onClick={() => createObjects()}>Generate objects</button>
+            </div>
+        )}
         </div>
-      ))}
-      <div />
-      <div />
-      {objects.length > 0 ? (
-        objects.map((obj) => (
-          <React.Fragment key={uuid()}>
-            {Object.entries(obj).map((keyValuePair) => (
-              <div key={uuid()} className='cell'>
-                {keyValuePair[1]}
-              </div>
-            ))}
-            <Link to={`/object/${obj._id}`}>Edit</Link>
-            <button
-              onClick={() => {
-                deleteObj(obj._id);
-              }}
-            >
-              Delete
-            </button>
-          </React.Fragment>
-        ))
-      ) : (
-        <div>
-          <p>No objects to show</p>
-          <button onClick={() => reloadObjects()}>Reload objects</button>
-          <button onClick={() => createObjects()}>Generate objects</button>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

@@ -16,7 +16,7 @@ app.use('/tasks', tasksRoute);
 app.use('/views', viewsRoute);
 
 // Connect to database
-mongoose.connect(process.env.BD_CONNECTION, () =>
+mongoose.connect(process.env.DB_CONNECTION, () =>
   console.log('Connected to the database')
 );
 
