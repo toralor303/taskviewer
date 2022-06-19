@@ -20,7 +20,7 @@ const ObjectsList = () => {
   }, [params.objectType]);
 
   const createObjects = async () => {
-    await createTestObjects(process.env.API_URI + params.objectType, () => reloadObjects());
+    await createTestObjects(configs.API_URI + params.objectType, () => reloadObjects());
   };
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const ObjectsList = () => {
   }, [reloadObjects]);
 
   const deleteObj = async (id) => {
-    deleteObject(`${process.env.API_URI}${params.objectType}/${id}`, () => reloadObjects());
+    deleteObject(`${configs.API_URI}${params.objectType}/${id}`, () => reloadObjects());
   };
 
   return (
